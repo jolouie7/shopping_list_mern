@@ -4,14 +4,17 @@ const mongoose = require('mongoose');
 
 require("dotenv").config();
 
+// Bring in Routes
+const items = require('./routes/api/items')
+
 const app = express();
 const port = process.env.PORT || 5000;
 
-// middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// connect to mongodb
+// Connect to mongodb
 const uri = process.env.MONGO_URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
@@ -23,7 +26,8 @@ connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
 
-// routes
+// Use routes
+app.use("/api/items", items)
 
 // start server
 app.listen(port, () => {
