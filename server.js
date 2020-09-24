@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const cors = require("cors");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 require("dotenv").config();
 
 // Bring in Routes
-const items = require('./routes/api/items')
+const items = require("./routes/api/items");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -26,7 +26,11 @@ connection.once("open", () => {
 });
 
 // Use routes
-app.use("/api/items", items)
+app.use("/api/items", items);
+
+app.get("/", (req, res) => {
+  res.send("Hello from Express!");
+});
 
 // start server
 app.listen(port, () => {
