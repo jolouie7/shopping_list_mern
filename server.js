@@ -14,6 +14,10 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("/build"));
+}
+
 // Connect to mongodb
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
@@ -30,6 +34,10 @@ app.use("/api/items", items);
 
 app.get("/", (req, res) => {
   res.send("Hello from Express!");
+});
+
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "/build", "index.html"));
 });
 
 // start server
