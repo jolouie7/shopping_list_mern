@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Connect to mongodb
-mongoose.connect(process.env.MONGODB_URL, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
