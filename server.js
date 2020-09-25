@@ -4,9 +4,6 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
-// Bring in Routes
-const items = require("./routes/api/items");
-
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -26,7 +23,9 @@ connection.once("open", () => {
 });
 
 // Use routes
-app.use("/api/items", items);
+app.use("/api/items", require("./routes/api/items"));
+app.use("/api/users", require("./routes/api/users"));
+app.use("/api/auth", require("./routes/api/auth"));
 
 app.get("/", (req, res) => {
   res.send("Hello from Express!");
