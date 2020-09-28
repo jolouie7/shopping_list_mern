@@ -7,20 +7,20 @@ const auth = require("../../middleware/auth");
 // User Model
 const User = require("../../models/User");
 
-// @route POST api/auth
+// @route POST api/auth/login
 // @desc Authenticate user
 // @access Public
-router.post("/", (req, res) => {
-  const { email, password, username } = req.body;
+router.post("/login", (req, res) => {
+  const { password, username } = req.body;
 
   // Simple validation
-  if (!email || !password || !username) {
+  if ( !password || !username) {
     return res.status(400).json({ msg: "Please enter all fields" });
   }
 
   // Check for existing user
-  User.findOne({ email, username }).then((user) => {
-    if (!user) return res.status(400).json({ msg: "User does not exitst" });
+  User.findOne({ username: username }).then((user) => {
+    if (!user) return res.status(400).json({ msg: "User does not exist" });
 
     // Validate password
     bcrypt.compare(password, user.password)
@@ -52,9 +52,13 @@ router.post("/", (req, res) => {
 // @desc Get user data
 // @access Private
 router.get("/user", auth, (req, res) => {
-  User.findById(req.user.id)
-  .select("-password") // return everything except password
-  .then(user => res.json(user))
+  try {
+    User.findById(req.user.id)
+    .select("-password") // return everything except password
+    .then(user => res.json(user))
+  } catch (error) {
+    res.status(400).json({ msg: error.message })
+  }
 })
 
 module.exports = router;

@@ -6,10 +6,10 @@ const jwt = require("jsonwebtoken");
 // User Model
 const User = require("../../models/User");
 
-// @route POST api/users
+// @route POST api/users/register
 // @desc Register new user
 // @access Public
-router.post("/", (req, res) => {
+router.post("/register", (req, res) => {
   const { name, email, password, username } = req.body;
 
   // Simple validation
@@ -18,8 +18,9 @@ router.post("/", (req, res) => {
   }
 
   // Check for existing user
-  User.findOne({ email, username }).then((user) => {
-    if (user) return res.status(400).json({ msg: "User already exitst" });
+  User.findOne({email: email, username: username}).then((user) => {
+    console.log("users error: ", user)
+    if (user) return res.status(400).json({ msg: "User already exist" });
 
     const newUser = new User({
       name,
@@ -48,7 +49,7 @@ router.post("/", (req, res) => {
                   email: user.email,
                   username: user.username,
                 },
-              });
+              })
             }
           );
         });
@@ -56,5 +57,18 @@ router.post("/", (req, res) => {
     });
   });
 });
+
+// @route GET api/users
+// @desc Get all users
+// @access Private
+router.get("/", (req, res) => {
+  try {
+    const users = User.find();
+    if (!user) throw Error("No users exist");
+    res.json(users)
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+})
 
 module.exports = router;
