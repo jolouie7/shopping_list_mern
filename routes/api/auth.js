@@ -48,7 +48,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-// @route POST api/users/register
+// @route POST api/auth/register
 // @desc Register new user
 // @access Public
 router.post("/register", (req, res) => {
